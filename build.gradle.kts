@@ -6,19 +6,11 @@ plugins {
 
 repositories {
     mavenCentral()
-
-    maven("https://dl.bintray.com/kotlin/kotlinx/")
+    jcenter()
 }
 
 dependencies {
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("org.jetbrains.kotlinx", "kotlinx-cli", "0.2")
-
-
-//    implementation(project("CoreServiceKit"))
-
-
+    implementation(project("CoreServiceKit"))
 }
 
 application {

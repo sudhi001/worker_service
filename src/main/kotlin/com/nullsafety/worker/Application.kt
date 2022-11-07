@@ -1,23 +1,26 @@
 package com.nullsafety.worker
 
-import kotlinx.cli.ArgParser
-import kotlinx.cli.ArgType
-import kotlinx.cli.default
+import com.nullsafety.core.CoreContext
+import com.nullsafety.core.CoreServiceKit
 
-object Application {
-    const val appName = "Worker Service App"
-    const val version = "0.0.1"
+
+class Application {
+    companion object {
+        var port = 7070
+        val core = CoreServiceKit.create(CoreContext())
+    }
 }
 
-fun main(args: Array<String>) {
-    val parser = ArgParser("${Application.appName}:: ${Application.version}")
-    val version by parser.option(ArgType.Boolean, shortName = "V", description = "Version")
-        .default(false)
-
-    // Add all input to parser
-    parser.parse(args)
-
-    if (version) println(Application.version)
+fun main() {
+    Application.core.app.start(Application.port)
+    Application.core.app.run {
+        Application.core.workerManager.start()
+    }
+    Runtime.getRuntime().addShutdownHook(Thread {
+        Application.core.app.stop()
+        Application.core.workerManager.stop()
+    })
 }
+
 
 
